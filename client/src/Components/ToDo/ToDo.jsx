@@ -13,6 +13,7 @@ function ToDo() {
   const [handleEdit, setHandleEdit] = useState(undefined);
   const [showTask, setshowTask] = useState(undefined);
   const [AddToDos, setAddToDos] = useState(undefined);
+  const[enable,setEnable] = useState(true)
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("addedOn"); // Default sorting by addedOn
 
@@ -56,6 +57,7 @@ function ToDo() {
   };
 
   const handleDelete = async (id) => {
+    setEnable(false)
     try {
       const headers = {
         Authorization: `Bearer ${userInfo.token}`,
@@ -65,12 +67,15 @@ function ToDo() {
       });
       const tasks = data.updatedTask;
       dispatch({ type: reducerCases.SET_USER_TASK, userTask: { tasks } });
+      setEnable(true)
     } catch (err) {
+      setEnable(true)
       console.log(err);
     }
   };
 
   const handleLogout = async () => {
+    setEnable(false)
     alert("Logout Successfully");
     navigate("/login");
     dispatch({
@@ -82,6 +87,7 @@ function ToDo() {
       userTask: null,
     });
     localStorage.clear();
+    setEnable(true)
   };
 
   const handleLogin = async () => {
@@ -153,7 +159,7 @@ function ToDo() {
         </div>
         {/* Task list */}
         <ul className="space-y-4">
-          {sortedTasks?.map((task) => (
+          {sortedTasks ? sortedTasks?.map((task) => (
             <li
               key={task._id}
               className="flex flex-col md:flex-row justify-between items-center bg-gray-100 rounded-lg p-4 shadow-md"
@@ -170,15 +176,15 @@ function ToDo() {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(task._id)}
+                  onClick={() => enable ? handleDelete(task._id) : undefined}
                   className="text-red-500 hover:text-red-600"
                 >
                   Delete
                 </button>
               </div>
             </li>
-          ))}
-        </ul>
+          )) : <h1 className="text-2xl font-bold mt-5"> Loading Tasks From Backend ...</h1>}
+        </ul >
       </div>
       {/* Modals for adding, editing, and viewing tasks */}
       {handleEdit && <AddToDo editTask={handleEdit} setHandleEdit={setHandleEdit} />}

@@ -1,4 +1,4 @@
-export const HOST = "http://localhost:5000"
+export const HOST = "https://task-management-indol-two.vercel.app"
 
 export const LOGIN_ROUTE = `${HOST}/user/login`
 export const SIGNUP_ROUTE = `${HOST}/user/signup`

@@ -6,6 +6,7 @@ import { reducerCases, useStateProvider } from "../../context/StateContext";
 
 function Login() {
   const [{ userInfo }, dispatch] = useStateProvider();
+  const[enable,setEnable] = useState(true)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setEnable(false)
       // Check if email and password are provided
       if (!email || !password) {
         return alert("All Fields are Mandatory");
@@ -31,7 +33,9 @@ function Login() {
         // If login fails, display error message
         alert("Login Failed: " + data.message);
       }
+      setEnable(true)
     } catch (err) {
+      setEnable(true)
       console.log(err);
       alert("An error occurred while logging in. Please try again later.");
     }
@@ -40,7 +44,7 @@ function Login() {
   return (
     <div className="flex justify-center items-center h-screen">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={enable ? handleSubmit : undefined}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       >
         <div className="mb-4">
@@ -80,7 +84,7 @@ function Login() {
         <div className="flex items-center justify-between">
           {/* Login button */}
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className={`${enable ? "bg-blue-500 hover:bg-blue-700" : "bg-gray-500 hover:bg-gray-700"} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
             type="submit"
           >
             Log In

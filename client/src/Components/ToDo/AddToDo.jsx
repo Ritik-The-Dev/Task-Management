@@ -6,7 +6,7 @@ import { reducerCases, useStateProvider } from "../../context/StateContext";
 
 function AddToDo({ editTask = undefined, setHandleEdit, setAddToDos }) {
   const [{ userInfo }, dispatch] = useStateProvider();
-
+  const[enable,setEnable] = useState(true)
   // State variables for title, date, description, and completion status
   const [title, setTitle] = useState(editTask ? editTask?.TaskTitle : "");
   const [date, setDate] = useState(
@@ -20,6 +20,7 @@ function AddToDo({ editTask = undefined, setHandleEdit, setAddToDos }) {
   // Function to handle adding a new task
   const handleClick = async (e) => {
     e.preventDefault();
+    setEnable(false)
     try {
       if (!title || !date || !description || !userInfo) {
         return alert("All Fields are Mandatory");
@@ -40,7 +41,9 @@ function AddToDo({ editTask = undefined, setHandleEdit, setAddToDos }) {
         dispatch({ type: reducerCases.SET_USER_TASK, userTask: { tasks } });
         setAddToDos(undefined);
       }
-    } catch (err) {
+    setEnable(true)
+  } catch (err) {
+      setEnable(true)
       console.log(err);
     }
   };
@@ -48,6 +51,7 @@ function AddToDo({ editTask = undefined, setHandleEdit, setAddToDos }) {
   // Function to handle editing an existing task
   const EdithandleClick = async (e) => {
     e.preventDefault();
+    setEnable(false)
     try {
       if (!title || !date || !description || !userInfo) {
         return alert("All Fields are Mandatory");
@@ -68,7 +72,9 @@ function AddToDo({ editTask = undefined, setHandleEdit, setAddToDos }) {
         dispatch({ type: reducerCases.SET_USER_TASK, userTask: { tasks } });
         setHandleEdit(undefined);
       }
-    } catch (err) {
+    setEnable(true)
+  } catch (err) {
+      setEnable(true)
       console.log(err);
     }
   };
@@ -150,8 +156,8 @@ function AddToDo({ editTask = undefined, setHandleEdit, setAddToDos }) {
               </label>
               {/* Button to edit task */}
               <button
-                className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-                onClick={EdithandleClick}
+                className={`w-full px-4 py-2 ${enable ? "bg-blue-500 focus:bg-blue-600 hover:bg-blue-600" : "bg-gray-500 focus:bg-gray-600 hover:bg-gray-600"} text-white rounded-md focus:outline-none`}
+                onClick={enable ? EdithandleClick : undefined}
               >
                 Edit Task
               </button>
@@ -208,8 +214,8 @@ function AddToDo({ editTask = undefined, setHandleEdit, setAddToDos }) {
               />
               {/* Button to add task */}
               <button
-                className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-                onClick={handleClick}
+                className={`w-full px-4 py-2 text-white rounded-md ${enable ? "bg-blue-500 focus:bg-blue-600 hover:bg-blue-600" : "bg-gray-500 focus:bg-gray-600 hover:bg-gray-600"} focus:outline-none`}
+                onClick={enable ? handleClick : undefined}
               >
                 Add Task
               </button>
