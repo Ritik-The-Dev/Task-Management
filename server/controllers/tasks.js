@@ -26,7 +26,7 @@ export const AddTask = async (req, res) => {
     // Save the updated user object
     await user.save();
 
-    res.status(200).json({ message: "Task added successfully", user });
+    res.status(200).json({ message: "Task added successfully", user:{name:user.name,email:user.email,_id:user._id,tasks:user.tasks,joinedOn:user.joinedOn} });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
@@ -110,7 +110,7 @@ export const updateTask = async (req, res) => {
     // Save the updated user object
     await user.save();
 
-    res.status(200).json({ message: "Task successfully updated", updatedTask: user });
+    res.status(200).json({ message: "Task successfully updated", updatedTask: {name:user.name,email:user.email,_id:user._id,tasks:user.tasks,joinedOn:user.joinedOn} });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }

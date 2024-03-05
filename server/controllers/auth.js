@@ -30,7 +30,7 @@ export const signup = async (req, res) => {
       {  expiresIn: "30d" }
     );
     // Return success response with the newly created user and token
-    res.status(200).json({ result: newUser, token, success:true });
+    res.status(200).json({ result: {name:newUser.name,email:newUser.email,_id:newUser._id,tasks:newUser.tasks,joinedOn:newUser.joinedOn}, token, success:true });
   } catch (error) {
     // Handle errors
     res.status(500).json("Something went wrong...");
@@ -61,7 +61,7 @@ export const login = async (req, res) => {
     ); 
 
     // Return success response with the authenticated user and token
-    res.status(200).json({ result: existinguser, token, success:true });
+    res.status(200).json({ result: {name:existinguser.name,email:existinguser.email,_id:existinguser._id,tasks:existinguser.tasks,joinedOn:existinguser.joinedOn}, token, success:true });
   } catch (error) {
     console.log(error)
     // Handle errors
